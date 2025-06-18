@@ -2,7 +2,8 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'https://blog-server-tbwq.onrender.com/',
+  baseURL: 'https://blog-server-tbwq.onrender.com',
+  // baseURL: 'http://localhost:4000',
 });
   
 export interface ImageProps {
@@ -62,12 +63,33 @@ export interface ImageProps {
     }
   };
   
+  // export const addPost = async (post: FormData): Promise<Post> => {
+  //   const response = await api.post('/blog/create', post, {
+  //     headers: { 'Content-Type': 'multipart/form-data' },
+  //   });
+  //   const newPost = response.data;
+  //   return {
+  //     title: newPost.title,
+  //     content: newPost.content,
+  //     excerpt: newPost.content.length > 100 ? newPost.content.slice(0, 100) + '...' : newPost.content,
+  //     author: newPost.author,
+  //     date: new Date(newPost.createdAt).toLocaleDateString('en-US', {
+  //       year: 'numeric',
+  //       month: 'long',
+  //       day: 'numeric',
+  //     }),
+  //     image: newPost.image,
+  //     slug: newPost._id,
+  //   };
+  // };
+
   export const addPost = async (post: FormData): Promise<Post> => {
-    const response = await api.post('/blog/create', post, {
+    const response = await api.post('/blog/create', post, { 
       headers: { 'Content-Type': 'multipart/form-data' },
     });
     const newPost = response.data;
     return {
+      _id: newPost._id,
       title: newPost.title,
       content: newPost.content,
       excerpt: newPost.content.length > 100 ? newPost.content.slice(0, 100) + '...' : newPost.content,
@@ -78,7 +100,7 @@ export interface ImageProps {
         day: 'numeric',
       }),
       image: newPost.image,
-      slug: newPost._id,
+      slug: newPost.slug || newPost._id,
     };
   };
 

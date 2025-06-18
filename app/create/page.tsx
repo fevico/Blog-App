@@ -1,156 +1,37 @@
-// // app/create/page.tsx
-// 'use client';
+// blog-frontend/app/create/page.tsx
+"use client";
 
-// import { useState } from 'react';
-// import { z } from 'zod';
-// import { Button } from '../../components/ui/button';
-// import { Input } from '../../components/ui/input';
-// import { Textarea } from '../../components/ui/textarea';
-// import { Label } from '../../components/ui/label';
-// import { useRouter } from 'next/navigation';
-// import { addPost } from '@/lib/post';
-// import Header from '../component/Header';
-
-// const postSchema = z.object({
-//   title: z.string().min(1, 'Title is required'),
-//   content: z.string().min(1, 'Content is required'),
-//   author: z.string().min(1, 'Author is required'),
-//   image: z.string().url().optional()
-// });
-
-// export default function CreatePost() {
-//   const [formData, setFormData] = useState({ title: '', content: '', author: '', image: ''});
-//   const [errors, setErrors] = useState<{ [key: string]: string }>({});
-//   const [success, setSuccess] = useState<string | null>(null);
-//   const router = useRouter(); 
-
-//   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-//     setFormData({ ...formData, [e.target.name]: e.target.value });
-//     setErrors({});
-//     setSuccess(null);
-//   };
-
-//   const handleSubmit = (e: React.FormEvent) => {
-//     e.preventDefault();
-//     const result = postSchema.safeParse(formData);
-
-//     if (!result.success) {
-//       const newErrors: { [key: string]: string } = {};
-//       result.error.issues.forEach((issue) => {
-//         newErrors[issue.path[0]] = issue.message;
-//       });
-//       setErrors(newErrors);
-//       return;
-//     }
-
-//     try {
-//       // Generate excerpt from content
-//       const excerpt =
-//         result.data.content.length > 100
-//           ? result.data.content.slice(0, 100) + '...'
-//           : result.data.content;
-//       addPost({ ...result.data, excerpt });
-//       setSuccess('Post created successfully!');
-//       setFormData({ title: '', content: '', author: '', image: ''});
-//       setTimeout(() => {
-//         router.push('/');
-//       }, 1500);                        
-//     } catch (error) {
-//       setErrors({ form: 'Failed to save post. Please try again.' });
-//     }
-//   };
-
-//   return (
-//     <div className="min-h-screen bg-gray-100">
-//       <Header />
-//       <main className="container mx-auto py-8">
-//         <h2 className="text-3xl font-bold mb-6">Create New Post</h2>
-//         <form onSubmit={handleSubmit} className="max-w-lg mx-auto bg-white p-6 rounded-lg shadow">
-//           {success && <p className="text-green-500 mb-4">{success}</p>}
-//           {errors.form && <p className="text-red-500 mb-4">{errors.form}</p>}
-//           <div className="mb-4">
-//             <Label htmlFor="title">Title</Label>
-//             <Input
-//               id="title"
-//               name="title"
-//               value={formData.title}
-//               onChange={handleChange}
-//               className={errors.title ? 'border-red-500' : ''}
-//             />
-//             {errors.title && <p className="text-red-500 text-sm">{errors.title}</p>}
-//           </div>
-//           <div className="mb-4">
-//             <Label htmlFor="content">Content</Label>
-//             <Textarea
-//               id="content"
-//               name="content"
-//               value={formData.content}
-//               onChange={handleChange}
-//               className={errors.content ? 'border-red-500' : ''}
-//             />
-//             {errors.content && <p className="text-red-500 text-sm">{errors.content}</p>}
-//           </div>
-//           <div className="mb-4">
-//             <Label htmlFor="author">Author</Label>
-//             <Input
-//               id="author"
-//               name="author"
-//               value={formData.author}
-//               onChange={handleChange}
-//               className={errors.author ? 'border-red-500' : ''}
-//             />
-//             {errors.author && <p className="text-red-500 text-sm">{errors.author}</p>}
-//           </div>
-//           <div className='mb-4'>
-//             <Label htmlFor="image">Image</Label>
-//             <Input
-//               id="image"
-//               name="image"
-//               value={formData.image}
-//               onChange={handleChange}
-//               className={errors.image ? 'border-red-500' : ''}
-//             />
-//             {errors.image && <p className="text-red-500 text-sm">{errors.image}</p>}
-//           </div>
-//           <div className="mb-4">
-//           </div>
-//           <Button type="submit" className="hover:bg-blue-700 transition-colors">
-//             Create Post
-//           </Button>
-//         </form>
-//       </main>
-//     </div>
-//   );
-// }
-
-
-// app/create/page.tsx
-'use client';
-
-import { useState } from 'react';
-import { z } from 'zod';
-import { addPost } from '../../lib/api';
-import { Button } from '../../components/ui/button';
-import { Input } from '../../components/ui/input';
-import { Textarea } from '../../components/ui/textarea';
-import { Label } from '../../components/ui/label';
-import { useRouter } from 'next/navigation';
-import Header from '../component/Header';
+import { useState } from "react";
+import { z } from "zod";
+import { addPost } from "../../lib/api";
+import { Button } from "../../components/ui/button";
+import { Input } from "../../components/ui/input";
+import { Textarea } from "../../components/ui/textarea";
+import { Label } from "../../components/ui/label";
+import { useRouter } from "next/navigation";
+import Header from "../component/Header";
 
 const postSchema = z.object({
-  title: z.string().min(1, 'Title is required'),
-  content: z.string().min(1, 'Content is required'),
-  author: z.string().min(1, 'Author is required'),
+  title: z.string().min(1, "Title is required"),
+  content: z.string().min(1, "Content is required"),
+  author: z.string().min(1, "Author is required"),
 });
 
 export default function CreatePost() {
-  const [formData, setFormData] = useState({ title: '', content: '', author: '' });
+  const [formData, setFormData] = useState({
+    title: "",
+    content: "",
+    author: "",
+  });
   const [image, setImage] = useState<File | null>(null);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [success, setSuccess] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
     setErrors({});
     setSuccess(null);
@@ -176,26 +57,28 @@ export default function CreatePost() {
       return;
     }
 
+    setLoading(true); // Start loader
+
     try {
       const data = new FormData();
-      data.append('title', formData.title);
-      data.append('content', formData.content);
-      data.append('author', formData.author);
+      data.append("title", formData.title);
+      data.append("content", formData.content);
+      data.append("author", formData.author);
       if (image) {
-        data.append('image', image);
+        data.append("image", image);
       }
 
-      await addPost(data);
-      console.log(data)
-      setSuccess('Post created successfully!');
-      setFormData({ title: '', content: '', author: '' });
+      const newPost = await addPost(data);
+      setSuccess("Post created successfully!");
+      setFormData({ title: "", content: "", author: "" });
       setImage(null);
+      setLoading(false); // Stop loader
       setTimeout(() => {
-        router.push('/');
-      }, 1500);
+        router.push(`/post/${newPost.slug}`); // Redirect to new post
+      }, 1500); 
     } catch (error) {
-        console.log(error)
-      setErrors({ form: 'Failed to save post. Please try again.' });
+      setLoading(false); // Stop loader
+      setErrors({ form: "Failed to save post. Please try again." });
     }
   };
 
@@ -204,7 +87,10 @@ export default function CreatePost() {
       <Header />
       <main className="container mx-auto py-8">
         <h2 className="text-3xl font-bold mb-6">Create New Post</h2>
-        <form onSubmit={handleSubmit} className="max-w-lg mx-auto bg-white p-6 rounded-lg shadow">
+        <form
+          onSubmit={handleSubmit}
+          className="max-w-lg mx-auto bg-white p-6 rounded-lg shadow"
+        >
           {success && <p className="text-green-500 mb-4">{success}</p>}
           {errors.form && <p className="text-red-500 mb-4">{errors.form}</p>}
           <div className="mb-4">
@@ -214,9 +100,12 @@ export default function CreatePost() {
               name="title"
               value={formData.title}
               onChange={handleChange}
-              className={errors.title ? 'border-red-500' : ''}
+              className={errors.title ? "border-red-500" : ""}
+              disabled={loading}
             />
-            {errors.title && <p className="text-red-500 text-sm">{errors.title}</p>}
+            {errors.title && (
+              <p className="text-red-500 text-sm">{errors.title}</p>
+            )}
           </div>
           <div className="mb-4">
             <Label htmlFor="content">Content</Label>
@@ -225,9 +114,12 @@ export default function CreatePost() {
               name="content"
               value={formData.content}
               onChange={handleChange}
-              className={errors.content ? 'border-red-500' : ''}
+              className={errors.content ? "border-red-500" : ""}
+              disabled={loading}
             />
-            {errors.content && <p className="text-red-500 text-sm">{errors.content}</p>}
+            {errors.content && (
+              <p className="text-red-500 text-sm">{errors.content}</p>
+            )}
           </div>
           <div className="mb-4">
             <Label htmlFor="author">Author</Label>
@@ -236,21 +128,29 @@ export default function CreatePost() {
               name="author"
               value={formData.author}
               onChange={handleChange}
-              className={errors.author ? 'border-red-500' : ''}
+              className={errors.author ? "border-red-500" : ""}
+              disabled={loading}
             />
-            {errors.author && <p className="text-red-500 text-sm">{errors.author}</p>}
+            {errors.author && (
+              <p className="text-red-500 text-sm">{errors.author}</p>
+            )}
           </div>
           <div className="mb-4">
-            <Label htmlFor="image">Post Image</Label>
+            <Label htmlFor="image">Post Image (Optional)</Label>
             <Input
               id="image"
               type="file"
               accept="image/*"
               onChange={handleImageChange}
+              disabled={loading}
             />
           </div>
-          <Button type="submit" className="hover:bg-blue-700 transition-colors">
-            Create Post
+          <Button
+            type="submit"
+            className="bg-blue-600 hover:bg-blue-700 text-white transition-colors"
+            disabled={loading}
+          >
+            {loading ? "Creating..." : "Create Post"}
           </Button>
         </form>
       </main>

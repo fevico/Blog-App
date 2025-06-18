@@ -274,7 +274,7 @@ export default function UpdateBlogPost({ params }: { params: Promise<{ slug: str
       setSuccess('Post updated successfully!');
       setImage(null);
       setTimeout(() => {
-        router.push(`/posts/${updatedPost.slug || updatedPost._id}`);
+        router.push(`/post/${updatedPost.slug}`);
       }, 1500);
     } catch (error) {
       setErrors({ form: 'Failed to update post. Please try again.' });
@@ -335,8 +335,8 @@ export default function UpdateBlogPost({ params }: { params: Promise<{ slug: str
               onChange={handleImageChange}
             />
           </div>
-          <Button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white">
-            Update Post
+          <Button type="submit" disabled={loading} className="bg-blue-600 hover:bg-blue-700 text-white">
+            {loading ? 'Updating...' : 'Update Post'}
           </Button>
         </form>
       </main>
