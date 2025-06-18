@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'https://blog-server-tbwq.onrender.com/blog',
+  baseURL: 'https://blog-server-tbwq.onrender.com/',
 });
   
 export interface ImageProps {
@@ -22,7 +22,7 @@ export interface ImageProps {
   }
   
   export const getPosts = async (): Promise<Post[]> => {
-    const response = await api.get('/list');
+    const response = await api.get('/blog/list');
     return response.data.map((post: any) => ({
       _id: post._id,
       title: post.title,
@@ -41,7 +41,7 @@ export interface ImageProps {
   
   export const getPostBySlug = async (slug: string): Promise<Post | null> => {
     try {
-      const response = await api.get(`/${slug}`);
+      const response = await api.get(`blog/${slug}`);
       const post = response.data;
       return {
         _id: post._id,
@@ -63,7 +63,7 @@ export interface ImageProps {
   };
   
   export const addPost = async (post: FormData): Promise<Post> => {
-    const response = await api.post('/create', post, {
+    const response = await api.post('/blog/create', post, {
       headers: { 'Content-Type': 'multipart/form-data' },
     });
     const newPost = response.data;
@@ -83,7 +83,7 @@ export interface ImageProps {
   };
 
   export const updatePost = async (post: FormData, slug: string): Promise<Post> => {
-    const response = await api.patch(`/${slug}`, post, {
+    const response = await api.patch(`/blog/${slug}`, post, {
       headers: { 'Content-Type': 'multipart/form-data' },
     });
     const updatedPost = response.data;
