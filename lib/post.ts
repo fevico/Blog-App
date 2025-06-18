@@ -8,7 +8,7 @@ export interface Post {
   }
   
   export const getPosts = (): Post[] => {
-    const posts: Post[] = [
+    const posts: Post[] = [  
       {
         slug: 'first-post',
         title: 'My First Blog Post',
