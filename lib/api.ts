@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://localhost:4000/blog',
+  baseURL: 'https://blog-server-tbwq.onrender.com/blog',
 });
   
 export interface ImageProps {
